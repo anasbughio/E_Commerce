@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import '../styles/AdminLogin.css'; // ✅ Import external CSS file
 
 const AdminLogin = ({ onLogin }) => {
-  // const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
