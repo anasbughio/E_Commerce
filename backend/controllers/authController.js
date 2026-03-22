@@ -8,6 +8,24 @@ const crypto = require("crypto");
 const rateLimit = require('express-rate-limit');
 
 const COOKIE_NAME = 'refreshToken';
+const isProduction = process.env.NODE_ENV === 'production';
+
+// Cookie options for production (HTTPS) vs development
+const cookieOptions = {
+  httpOnly: true,
+  secure: isProduction,
+  sameSite: isProduction ? 'none' : 'lax',
+  path: '/',
+  maxAge: 1000 * 60 * 60 * 24 * 7
+};
+
+const csrfCookieOptions = {
+  httpOnly: false,
+  secure: isProduction,
+  sameSite: isProduction ? 'none' : 'lax',
+  path: '/',
+  maxAge: 1000 * 60 * 60 * 24 * 7
+};
 
 // Rate limiter for /auth/refresh (max 10 requests per minute)
 const refreshLimiter = rateLimit({
@@ -132,22 +150,10 @@ const Login = async (req, res) => {
 
     // 🧿 CSRF token for double-protection
     const csrf = crypto.randomBytes(32).toString("hex");
-    res.cookie('csrfToken', csrf, {
-      httpOnly: false,
-      secure: false,
-      sameSite: "lax",
-      path: "/",
-      maxAge: 1000 * 60 * 60 * 24 * 7
-    });
+    res.cookie('csrfToken', csrf, csrfCookieOptions);
 
     // 🧁 Refresh token cookie
-    res.cookie(COOKIE_NAME, refreshToken, {
-      httpOnly: true,
-      secure: false,
-      sameSite: "lax",
-      path: "/",
-      maxAge: 1000 * 60 * 60 * 24 * 7
-    });
+    res.cookie(COOKIE_NAME, refreshToken, cookieOptions);
 
     console.log(`Login: Issued refresh token for ${user.email}, roles: ${user.roles}`);
 
@@ -228,22 +234,10 @@ const Refresh = async (req, res) => {
 
     const accessToken = signAccessToken({ sub: payload.sub, roles: stored.user.roles });
 
-    res.cookie(COOKIE_NAME, newRefreshToken, {
-      httpOnly: true,
-      secure: false,
-      sameSite: "lax",
-      path: "/",
-      maxAge: 1000 * 60 * 60 * 24 * 7
-    });
+    res.cookie(COOKIE_NAME, newRefreshToken, cookieOptions);
 
     const newCsrf = crypto.randomBytes(32).toString("hex");
-    res.cookie('csrfToken', newCsrf, {
-      httpOnly: false,
-      secure: false,
-      sameSite: "lax",
-      path: "/",
-      maxAge: 1000 * 60 * 60 * 24 * 7
-    });
+    res.cookie('csrfToken', newCsrf, csrfCookieOptions);
 
     console.log('Refresh: Issued new refresh token for user:', payload.sub, 'rid:', newRefreshId, 'sid:', payload.sid || 'legacy');
     res.json({ accessToken, csrf: newCsrf });

@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
 const protectedRoutes = require('./routes/protectedRoutes');
+const isProduction = process.env.NODE_ENV === 'production';
 const clientUrl = process.env.CLIENT_URL || 'http://localhost:3000';
 const app = express();
 
@@ -13,7 +14,7 @@ const PORT = process.env.PORT || 5000;
 
 // ✅ Middleware
 app.use(cors({
-  origin: clientUrl, // frontend URL
+  origin: isProduction ? [clientUrl, /\.vercel\.app$/] : clientUrl,
   credentials: true,
 }));
 
