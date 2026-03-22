@@ -27,6 +27,20 @@ app.use("/api/webhook", require("./routes/stripeWebhook"));
 app.use(express.json());
 app.use(cookieParser());
 
+// ✅ Health check endpoint (for debugging Vercel)
+app.get('/api/health', (req, res) => {
+  res.json({
+    status: 'ok',
+    nodeEnv: process.env.NODE_ENV,
+    hasMongoUri: !!process.env.MONGO_URI,
+    hasJwtAccess: !!process.env.JWT_ACCESS_SECRET,
+    hasJwtRefresh: !!process.env.JWT_REFRESH_SECRET,
+    hasClientUrl: !!process.env.CLIENT_URL,
+    clientUrl: process.env.CLIENT_URL,
+    timestamp: new Date().toISOString()
+  });
+});
+
 // ✅ Your app routes
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api', protectedRoutes);
