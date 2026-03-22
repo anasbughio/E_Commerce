@@ -2,14 +2,11 @@ const express = require('express');
 const dotenv = require('dotenv');
 dotenv.config();
 const cors = require('cors');
-const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
-const helmet = require('helmet');
-const protectedRoutes = require('./routes/protectedRoutes');
-const isProduction = process.env.NODE_ENV === 'production';
-const clientUrl = process.env.CLIENT_URL || 'http://localhost:3000';
 const app = express();
 
+const isProduction = process.env.NODE_ENV === 'production';
+const clientUrl = process.env.CLIENT_URL || 'http://localhost:3000';
 const PORT = process.env.PORT || 5000;
 
 // ✅ Middleware
@@ -17,11 +14,6 @@ app.use(cors({
   origin: isProduction ? [clientUrl, /\.vercel\.app$/] : clientUrl,
   credentials: true,
 }));
-
-app.use(helmet());
-
-// ✅ Stripe Webhook must come BEFORE express.json()
-app.use("/api/webhook", require("./routes/stripeWebhook"));
 
 // ✅ Now you can safely parse JSON for all other routes
 app.use(express.json());
@@ -41,22 +33,81 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// ✅ Your app routes
-app.use('/api/auth', require('./routes/authRoutes'));
-app.use('/api', protectedRoutes);
-app.use('/api/products', require('./routes/productRoutes'));
-app.use('/uploads', express.static('uploads'));
-app.use('/api/cart', require('./routes/cartRoutes'));
-app.use('/api/orders', require('./routes/orderRoutes'));
-app.use('/api/admin/orders', require('./routes/adminOrderRoutes'));
-app.use('/api/admin/orders/history', require('./routes/adminOrderHistoryRoutes'));
-app.use("/api/admin", require("./routes/adminRoutes"));
-app.use("/api/stripe", require("./routes/stripeRoutes"));
+// ✅ Lazy-load routes to prevent crash on import errors
+try {
+  // Stripe Webhook must come BEFORE express.json() - but we already set it up above,
+  // so we mount it here with its own raw body parser
+  app.use("/api/webhook", require("./routes/stripeWebhook"));
+} catch (err) {
+  console.error("Failed to load stripeWebhook routes:", err.message);
+}
 
-// ✅ Connect DB
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("✅ MongoDB connected"))
-  .catch((err) => console.log("❌ Database connection error:", err));
+try {
+  app.use('/api/auth', require('./routes/authRoutes'));
+} catch (err) {
+  console.error("Failed to load authRoutes:", err.message);
+}
+
+try {
+  const protectedRoutes = require('./routes/protectedRoutes');
+  app.use('/api', protectedRoutes);
+} catch (err) {
+  console.error("Failed to load protectedRoutes:", err.message);
+}
+
+try {
+  app.use('/api/products', require('./routes/productRoutes'));
+} catch (err) {
+  console.error("Failed to load productRoutes:", err.message);
+}
+
+try {
+  app.use('/api/cart', require('./routes/cartRoutes'));
+} catch (err) {
+  console.error("Failed to load cartRoutes:", err.message);
+}
+
+try {
+  app.use('/api/orders', require('./routes/orderRoutes'));
+} catch (err) {
+  console.error("Failed to load orderRoutes:", err.message);
+}
+
+try {
+  app.use('/api/admin/orders', require('./routes/adminOrderRoutes'));
+} catch (err) {
+  console.error("Failed to load adminOrderRoutes:", err.message);
+}
+
+try {
+  app.use('/api/admin/orders/history', require('./routes/adminOrderHistoryRoutes'));
+} catch (err) {
+  console.error("Failed to load adminOrderHistoryRoutes:", err.message);
+}
+
+try {
+  app.use("/api/admin", require("./routes/adminRoutes"));
+} catch (err) {
+  console.error("Failed to load adminRoutes:", err.message);
+}
+
+try {
+  app.use("/api/stripe", require("./routes/stripeRoutes"));
+} catch (err) {
+  console.error("Failed to load stripeRoutes:", err.message);
+}
+
+app.use('/uploads', express.static('uploads'));
+
+// ✅ Connect DB (safely)
+const mongoose = require('mongoose');
+if (process.env.MONGO_URI) {
+  mongoose.connect(process.env.MONGO_URI)
+    .then(() => console.log("✅ MongoDB connected"))
+    .catch((err) => console.log("❌ Database connection error:", err));
+} else {
+  console.log("⚠️ MONGO_URI not set, skipping database connection");
+}
 
 // ✅ Start server locally, or export app for Vercel serverless
 if (process.env.NODE_ENV !== 'production') {
