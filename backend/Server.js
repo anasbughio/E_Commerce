@@ -1,5 +1,6 @@
 const express = require('express');
 const dotenv = require('dotenv');
+dotenv.config();
 const cors = require('cors');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
@@ -8,7 +9,6 @@ const protectedRoutes = require('./routes/protectedRoutes');
 const clientUrl = process.env.CLIENT_URL || 'http://localhost:3000';
 const app = express();
 
-dotenv.config();
 const PORT = process.env.PORT || 5000;
 
 // ✅ Middleware
