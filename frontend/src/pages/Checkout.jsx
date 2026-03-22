@@ -1,10 +1,7 @@
-import { loadStripe } from "@stripe/stripe-js";
 import api from "../api/axios";
 import UserNavbar from "../components/UserNavbar";
 import { useState } from "react";
 import "../styles/Checkout.css"; // ✅ Import external CSS
-
-const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
 
 const Checkout = () => {
   const [address, setAddress] = useState("");

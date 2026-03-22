@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from '../api/axios';
-import { useNavigate ,Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import '../styles/AdminLogin.css'; // ✅ Import external CSS file
 
 const AdminLogin = ({ onLogin }) => {

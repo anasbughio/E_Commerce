@@ -114,6 +114,7 @@ function parseJwt(token) {
     }
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     console.log('AuthProvider: Initial CSRF token:', Cookies.get('csrfToken'), 'accessToken:', accessToken ? accessToken.slice(0, 10) + '...' : null);
     tryRefresh();
