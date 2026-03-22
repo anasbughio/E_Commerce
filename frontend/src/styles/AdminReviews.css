@@ -1,0 +1,121 @@
+/* Container */
+.admin-reviews-container {
+  background-color: #f3f3f3;
+  min-height: 100vh;
+  padding: 2rem;
+  font-family: "Amazon Ember", Arial, sans-serif;
+}
+
+/* Title */
+.admin-reviews-title {
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #232f3e;
+  margin-bottom: 2rem;
+}
+
+/* No Reviews */
+.no-reviews {
+  text-align: center;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+/* Table */
+.table-container {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+  overflow-x: auto;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.reviews-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 800px;
+}
+
+.reviews-table th,
+.reviews-table td {
+  text-align: left;
+  padding: 12px 15px;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+.reviews-table th {
+  background-color: #232f3e;
+  color: #fff;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+}
+
+.reviews-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.reviews-table tbody tr:hover {
+  background-color: #fff4e5;
+  transition: background 0.2s ease;
+}
+
+/* Columns */
+.reviews-table td.rating {
+  color: #b12704;
+  font-weight: bold;
+}
+
+.reviews-table td.comment {
+  max-width: 350px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Delete Button */
+.btn-delete {
+  background-color: #d61a1a;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.btn-delete:hover {
+  background-color: #b91c1c;
+  transform: scale(1.05);
+}
+
+/* Scroll Styling */
+.table-container::-webkit-scrollbar {
+  height: 8px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  background-color: #febd69;
+  border-radius: 10px;
+}
+
+.table-container::-webkit-scrollbar-track {
+  background-color: #f3f3f3;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .reviews-table th,
+  .reviews-table td {
+    font-size: 0.85rem;
+    padding: 10px;
+  }
+
+  .admin-reviews-title {
+    font-size: 1.4rem;
+  }
+}

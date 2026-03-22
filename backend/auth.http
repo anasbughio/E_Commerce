@@ -1,0 +1,52 @@
+### Register User
+POST http://localhost:5000/api/auth/register
+Content-Type: application/json
+
+{
+  "username": "dd",
+  "email": "abc@gmail.com",
+  "password": "a",
+  "phoneNo":"3274832749"
+}
+
+### Login User
+POST http://localhost:5000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "abc@gmail.com",
+  "password": "a"
+}
+
+### Refresh access token
+POST http://localhost:5000/api/auth/refresh
+Content-Type: application/json
+X-CSRF-Token: 3a80035ec5baee68345c52b0c4c7abb76a2ef405ec8d9066045fd2e547172c52
+Cookie: csrfToken=3a80035ec5baee68345c52b0c4c7abb76a2ef405ec8d9066045fd2e547172c52; refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2OGI1NTU2YzFkNmEyNmZlYzE3YjRkOGQiLCJyaWQiOiJhNzE0OTUxYi1hN2ExLTQ4NjctOTQ2NC0xYzg5Nzc5NjFkYjIiLCJpYXQiOjE3NTY3MjQ2MTYsImV4cCI6MTc1NzMyOTQxNn0.2DLJsPR0beNa8fLYO8nmYo84DnnzZtpmtIRCPRYRnuA
+
+### Create Product
+
+POST http://localhost:5000/api/products/create
+Content-Type: application/json
+
+{
+  "name": "Product2",
+  "description": "This is product 1",
+  "price":100,
+  "category":"electronics",
+  "stock":10
+}
+
+### Get All Products
+
+GET http://localhost:5000/api/products
+Content-Type: application/json
+
+### Delete Product
+
+DELETE http://localhost:5000/api/products/68be74ff24539fa1e21be2e7
+Content-Type: application/json
+### Delete Product
+
+GET http://localhost:5000/api/products/68be7414ab7eb792dc573091
+Content-Type: application/json

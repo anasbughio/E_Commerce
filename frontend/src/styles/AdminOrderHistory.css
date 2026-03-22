@@ -1,0 +1,96 @@
+/* ---------- Amazon-Style Admin Order History ---------- */
+.admin-history-page {
+  background-color: #f3f3f3;
+  min-height: 100vh;
+  font-family: "Amazon Ember", Arial, sans-serif;
+}
+
+.history-container {
+  padding: 40px 60px;
+}
+
+.history-title {
+  font-size: 26px;
+  font-weight: 600;
+  color: #232f3e;
+  margin-bottom: 25px;
+}
+
+.no-orders {
+  text-align: center;
+  color: #555;
+  font-size: 18px;
+  padding: 50px;
+}
+
+/* ---------- Table ---------- */
+.table-wrapper {
+  background: #fff;
+  border-radius: 10px;
+  overflow-x: auto;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 700px;
+}
+
+.history-table thead {
+  background-color: #232f3e;
+  color: #fff;
+}
+
+.history-table th,
+.history-table td {
+  padding: 14px 18px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.history-table tbody tr:hover {
+  background-color: #f7fafa;
+  transition: background-color 0.2s ease;
+}
+
+/* ---------- Status Badges ---------- */
+.status-badge {
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.status-badge.delivered {
+  background-color: #5cb85c;
+  color: white;
+}
+
+.status-badge.pending {
+  background-color: #f0ad4e;
+  color: white;
+}
+
+.status-badge.processing {
+  background-color: #0275d8;
+  color: white;
+}
+
+.status-badge.shipped {
+  background-color: #5bc0de;
+  color: white;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 768px) {
+  .history-container {
+    padding: 20px;
+  }
+
+  .history-table th,
+  .history-table td {
+    padding: 10px;
+    font-size: 14px;
+  }
+}
