@@ -15,6 +15,15 @@ app.use(cors({
   credentials: true,
 }));
 
+// ✅ Lazy-load routes to prevent crash on import errors
+try {
+  // Stripe Webhook MUST come BEFORE express.json() and express.urlencoded()
+  // because Stripe needs the raw request body to verify the signature.
+  app.use("/api/webhook", require("./routes/stripeWebhook"));
+} catch (err) {
+  console.error("Failed to load stripeWebhook routes:", err.message);
+}
+
 // ✅ Now you can safely parse JSON for all other routes
 app.use(express.json());
 app.use(cookieParser());
@@ -32,15 +41,6 @@ app.get('/api/health', (req, res) => {
     timestamp: new Date().toISOString()
   });
 });
-
-// ✅ Lazy-load routes to prevent crash on import errors
-try {
-  // Stripe Webhook must come BEFORE express.json() - but we already set it up above,
-  // so we mount it here with its own raw body parser
-  app.use("/api/webhook", require("./routes/stripeWebhook"));
-} catch (err) {
-  console.error("Failed to load stripeWebhook routes:", err.message);
-}
 
 try {
   app.use('/api/auth', require('./routes/authRoutes'));
