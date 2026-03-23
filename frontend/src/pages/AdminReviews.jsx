@@ -10,7 +10,7 @@ const AdminReviews = () => {
   const fetchReviews = async () => {
     try {
       const res = await axios.get("/products/admin/reviews", {
-        headers: { Authorization: `Bearer ${localStorage.getItem("adminToken")}` },
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
       setReviews(res.data);
     } catch (err) {
@@ -22,7 +22,7 @@ const AdminReviews = () => {
     if (!window.confirm("Are you sure you want to delete this review?")) return;
     try {
       await axios.delete(`/products/admin/reviews/${productId}/${reviewId}`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("adminToken")}` },
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
       fetchReviews();
     } catch (err) {
