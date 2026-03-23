@@ -4,7 +4,7 @@ const Product = require('../models/product');
 // 🛒 Get User Cart
 const getUserCart = async (req, res) => {
   try {
-    const cart = await Cart.findOne({ userId: req.user._id }).populate('items.productId');
+    const cart = await Cart.findOne({ userId: req.user.id }).populate('items.productId');
     if (!cart) return res.json({ items: [] });
     res.json({ items: cart.items });
   } catch (error) {

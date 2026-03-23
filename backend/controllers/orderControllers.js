@@ -6,7 +6,7 @@ const Cart = require("../models/Cart");
 const createOrder = async (req, res) => {
   try {
     const { items, totalPrice, address } = req.body;
-    const userId = req.user._id; // ✅ Corrected
+    const userId = req.user.id; // ✅ Corrected
 
     if (!items || items.length === 0) {
       return res.status(400).json({ message: 'Cart is empty' });
@@ -58,7 +58,7 @@ const createOrder = async (req, res) => {
 
 const userOrders = async (req, res) => {
   try {
-    const userId = req.user._id;
+    const userId = req.user.id;
     const orders = await Order.find({ user: userId }).sort({ createdAt: -1 });
     res.status(200).json({ orders });
   } catch (error) {

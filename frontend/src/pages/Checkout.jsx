@@ -1,15 +1,16 @@
 import api from "../api/axios";
 import UserNavbar from "../components/UserNavbar";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { AuthContext } from "../AuthProvider";
 import "../styles/Checkout.css"; // ✅ Import external CSS
 
 const Checkout = () => {
+  const { user: currentUser } = useContext(AuthContext);
   const [address, setAddress] = useState("");
   const [cart] = useState(JSON.parse(localStorage.getItem("cart")) || []);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
-  const currentUser = JSON.parse(localStorage.getItem("user"));
   const totalPrice = cart.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0
@@ -21,7 +22,7 @@ const Checkout = () => {
       const user = currentUser || null;
       const res = await api.post("/stripe/create-checkout-session", {
         products: cart,
-        userId: user?._id || "",
+        userId: user?.id || "",
         address,
         totalPrice: totalPrice,
       });
