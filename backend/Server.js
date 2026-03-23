@@ -117,3 +117,12 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 module.exports = app;
+
+// ✅ VERCEL FIX: Tell Vercel NOT to automatically parse the body. 
+// If Vercel parses it before it reaches Express, the Stripe webhook signature verification fails!
+// Express middleware (express.json and express.raw) will now handle the parsing instead.
+module.exports.config = {
+  api: {
+    bodyParser: false,
+  },
+};
