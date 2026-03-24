@@ -3,8 +3,8 @@
 A full-stack, production-ready E-Commerce application built with the MERN stack (MongoDB, Express, React, Node.js). It features a robust authentication system, a complete shopping cart/checkout flow integrated with Stripe, and a dedicated comprehensive Admin panel for managing products and orders.
 
 ## 🚀 Live Demo
-- **Frontend / Customer Portal**: [Add your live frontend URL here]
-- **Admin Login**: [Add your live frontend URL here]/admin
+- **Frontend / Customer Portal**: http://e-commerce-wchp.vercel.app
+- **Admin Login**: https://e-commerce-wchp.vercel.app/admin
   - *Demo Admin Credentials:* `admin@gmail.com` / `admin123`
 
 ## 🛠️ Tech Stack
